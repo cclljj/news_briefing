@@ -6,6 +6,7 @@ import json
 from datetime import date
 
 URL_everything = "http://newsapi.org/v2/everything"
+URL_top_headlines = "http://newsapi.org/v2/top-headlines"
 
 today = date.today()
 today = today.strftime("%Y%m%d")
@@ -19,6 +20,9 @@ def fetch_news(KEY, TOPIC, PREFIX):
 		KEY = KEY.strip()
 		keyfile.close()
 		headers['X-Api-Key'] = KEY
+
+		r = requests.get(URL_top_headlines + "?country=tw", headers=headers)
+		results["headlines"] = r.content
 
 		for topic in topicfile:
 			topic = topic.strip()
