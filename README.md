@@ -1,6 +1,16 @@
 # news_briefing
-using news-api to automatically download news of interests and display in Collapsible Tree
 
-example:
+## Goal
+1. use NewsAPI (https://newsapi.org) to fetch news of interests into a JSON file
+2. use d3.js to display the JSON content in Collapsible Tree (https://observablehq.com/@d3/collapsible-tree)
 
-python fetch_news.py -k .key -t topic.txt
+## Example:
+
+```
+usage: fetch_news.py [-h] -k KEY -t TOPIC [-p PREFIX]
+```
+
+```
+python fetch_news.py -k .key -t topic.txt -p /tmp
+```
+
