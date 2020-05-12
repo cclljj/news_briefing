@@ -4,12 +4,20 @@ import argparse
 import requests
 import json
 from datetime import date
+from datetime import datetime, timedelta
 
-URL_everything = "http://newsapi.org/v2/everything"
-URL_top_headlines = "http://newsapi.org/v2/top-headlines"
+NOW = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+YESTERDAY = (datetime.utcnow() - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 today = date.today()
-today = today.strftime("%Y%m%d")
+today = today.strftime("%Y-%m-%d")
+
+
+
+URL_everything = "http://newsapi.org/v2/everything?pageSize=100&soryBy=popularity&from=" + YESTERDAY + "&to=" + NOW
+URL_top_headlines = "http://newsapi.org/v2/top-headlines"
+HEADLINE_Country = {"tw", "us", "cn", "kr", "sg", "gb", "au", "hk"}
+
 
 def fetch_news(KEY, TOPIC, PREFIX):
 	results = {}
@@ -21,12 +29,13 @@ def fetch_news(KEY, TOPIC, PREFIX):
 		keyfile.close()
 		headers['X-Api-Key'] = KEY
 
-		r = requests.get(URL_top_headlines + "?country=tw", headers=headers)
-		results["headlines"] = r.content
+#		for country in HEADLINE_Country:
+#			r = requests.get(URL_top_headlines + "?country=" + country, headers=headers)
+#			results["headlines_" + country] = r.content
 
 		for topic in topicfile:
 			topic = topic.strip()
-			r = requests.get(URL_everything + "?q=" + topic, headers=headers)
+			r = requests.get(URL_everything + "&q=" + topic, headers=headers)
 			results[topic] = r.content
 
 		json.dump(results, outfile)
